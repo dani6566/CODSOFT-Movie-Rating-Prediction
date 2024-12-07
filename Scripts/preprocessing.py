@@ -24,11 +24,11 @@ def missing_value_bar(data):
     plt.show()
 
 def handel_missing_value(data):
-    data['Duration'] = pd.to_numeric(data['Duration'],errors='coerce')
-    data['Duration'].fillna(data['Duration'].median(),inplace=True)
-
-    data['Votes'] = pd.to_numeric(data['Votes'],errors='coerce')
-    data['Votes'].fillna(data['Votes'].median(),inplace=True)
+    data['Duration'] = data['Duration'].str.extract('(\d+)', expand=False)  # Remove non-numeric characters (e.g., ' min') using regex
+    data['Duration'] = pd.to_numeric(data['Duration'], errors='coerce')  # Convert to numeric
+    data['Duration'].fillna(data['Duration'].median(), inplace=True) # Fill NaN with the median
+    data['Votes'] = pd.to_numeric(data['Votes'],errors='coerce')  # Convert to numeric
+    data['Votes'].fillna(data['Votes'].median(),inplace=True)   # Fill NaN with the median
     print(data['Duration'].isnull().sum())
     categorical_columns = ['Genre','Director','Actor 1','Actor 2','Actor 3']
     for col in categorical_columns:
